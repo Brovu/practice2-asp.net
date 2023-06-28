@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Practice2.Models.TypeNew>
+
+@{
+    ViewBag.Title = "Danh sách loại tin";
+}
+
+<a href="~/TypeNews/AddType">Thêm mới loại tin</a>
+<table class="table">
+    <tr>
+        <th>
+            Tên Loại
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.typeName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditType", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "DeleteType", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

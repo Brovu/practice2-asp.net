@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Practice2.Models.News>
+
+@{
+    ViewBag.Title = "Trang chủ";
+}
+
+
+<a href="~/Home/AddNews">Thêm mới tin tức</a>
+
+<div class="row mt-2">
+    <div class="col-md-12">
+        <form class="d-flex gap-2" method="get">
+            <input type="text" class="form-control" name="filter" placeholder="Nhập tiêu đề cần tìm..." />
+            <button class="btn btn-info" type="submit">Tìm</button>
+            <select name="id" class="form-control">
+                <option value="">Chọn thể loại</option>
+                @foreach (var i in new Practice2.Models.ManageNewsEntities().TypeNews.ToList())
+                {
+                    <option value="@i.ID">
+                        @i.typeName
+                    </option>
+
+                }
+            </select>
+        </form>
+        @if (!string.IsNullOrEmpty(ViewBag.Message))
+        {
+            <p class="text-danger">@ViewBag.Message</p>
+        }
+        </div>
+   
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Tiêu đề
+        </th>
+        <th>
+            Ngày đăng
+        </th>
+
+        <th>
+            Loại tin tức
+        </th>
+        <th>
+            Hiển thị
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @{
+                    DateTime? birthDate = item.Date as DateTime?;
+                    string formattedBirth = birthDate?.ToString("dd/MM/yyyy");
+                }
+                @formattedBirth
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeNew.typeName)
+            </td>
+
+            <td>
+                <input type="checkbox" @Html.Raw(item.isDisplay == true ? "checked" : "") />
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "EditNews", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "DeleteNews", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    function submitForm(selectElement) {
+        selectElement.form.submit();
+    }
+</script>
